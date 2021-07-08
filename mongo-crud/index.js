@@ -10,10 +10,15 @@ app.get('/',(req,res)=>{
 })
 client.connect(err => {
   const collection = client.db("myDbUser").collection("products");
-  collection.insertOne({name:"Alu",price:24,quantity:2})
-  .then(res=>{
-    console.log('Add Databsae data');
+  
+  app.post('/addProduct',(req,res)=>{
+    collection.insertOne({name:"Alu",price:24,quantity:2})
+    .then(res=>{
+      console.log('Add Databsae data');
+    })
+
   })
+  
   console.log('connent');
   // perform actions on the collection object
   // client.close();
