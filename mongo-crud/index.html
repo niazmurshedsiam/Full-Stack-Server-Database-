@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <h1>Mongodb file</h1>
     <form action="/addProduct" method="POST">
@@ -15,5 +17,25 @@
         <input type="submit" value="Add Product">
 
     </form>
+    <div id="product">
+
+    </div>
+
+    <script>
+        function loadProduct() {
+            fetch('/products')
+                .then(res => res.json())
+                .then(product => {
+                    const container = document.getElementById('product');
+                    product.forEach(pd => {
+                        const p = document.createElement('p');
+                        p.innerHTML = `name: ${pd.name} price: ${pd.price} quantity: ${pd.quantity}`
+                        container.appendChild(p);
+                    })
+                })
+        }
+        loadProduct();
+    </script>
 </body>
+
 </html>

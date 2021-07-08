@@ -7,23 +7,27 @@ console.log(uri);
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json());
 app.get('/',(req,res)=>{
   res.sendFile(__dirname + '/index.html');
 })
 client.connect(err => {
   const collection = client.db("myDbUser").collection("products");
-  
-  app.post('/addProduct',(req,res)=>{
+
+  app.get('/products',(req,res)=>{
+    collection.find({}).limit(4)
+    .toArray((err,document)=>{
+      res.send(document);
+    })
+
+  })
+  app.post('/addproduct',(req,res)=>{
     const product = req.body;
     collection.insertOne(product)
     .then(result=>{
-      console.log("Data Add Database");
+      console.log('Data Add to Database');
       res.send('success');
     })
     
-    
-
   })
   
   console.log('connent');
