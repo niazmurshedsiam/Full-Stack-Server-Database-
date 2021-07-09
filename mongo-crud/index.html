@@ -22,19 +22,32 @@
     </div>
 
     <script>
-        function loadProduct() {
+        function loadData() {
             fetch('/products')
                 .then(res => res.json())
                 .then(product => {
                     const container = document.getElementById('product');
                     product.forEach(pd => {
                         const p = document.createElement('p');
-                        p.innerHTML = `name: ${pd.name} price: ${pd.price} quantity: ${pd.quantity}`
+                        p.innerHTML =
+                            `
+                        name: ${pd.name} price: ${pd.price} Quantity: ${pd.quantity} 
+                        <button onclick="deleteProduct('${pd._id}')">Delete</button>
+                    `;
                         container.appendChild(p);
                     })
                 })
         }
-        loadProduct();
+        loadData();
+        function deleteProduct(id){
+            fetch(`/delete/${id}`,{
+                method:"DELETE"
+            })
+            .then(res=>res.json())
+            .then(result=>{
+                console.log('Delete the Data');
+            })
+        }
     </script>
 </body>
 
