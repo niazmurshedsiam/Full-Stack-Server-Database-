@@ -20,7 +20,12 @@ client.connect(err => {
     })
 
   })
-
+  app.get('/product/:id',(req,res)=>{
+    collection.find({_id: ObjectID(req.params.id)})
+    .toArray((err,documents)=>{
+      res.send(documents[0]);
+    })
+  })
   app.delete('/delete/:id',(req,res)=>{
     collection.deleteOne({_id: ObjectID(req.params.id)})
     .then(result=>{
@@ -29,12 +34,32 @@ client.connect(err => {
     })
     
   })
-  app.post('/addproduct',(req,res)=>{
+  app.patch('/update/:id',(req,res)=>{
+    console.log(req.body.price);
+    collection.updateOne({_id: ObjectID(req.params.id)},{
+      $set: {price: req.body.price, quantity: req.body.quantity}
+    })
+    .then(result =>{
+      console.log(result);
+    })
+  })
+  
+  // app.patch('/update/:id',(req,res)=>{
+  //   collection.updateOne({_id: ObjectID(req.params.id)},
+  //   {
+  //       $set: { price: req.body.price, quantity: req.body.quantity}      
+  //   })
+  //   .then(result=>{
+  //     console.log(result);
+  //   })
+
+  // })
+  app.post('/addProduct',(req,res)=>{
     const product = req.body;
     collection.insertOne(product)
     .then(result=>{
       console.log('Data Add to Database');
-      res.send('success');
+      res.redirect('/');
     })
     
   })
