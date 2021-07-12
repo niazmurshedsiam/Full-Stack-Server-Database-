@@ -29,7 +29,14 @@ const Book = () => {
     setSelectedDate(newDate);
   };
   const handleBooking = ()=>{
-      console.log('done');
+      const newBooking = {...loginInUser,...selectedDate};
+      fetch('http://localhost:8000/addBooking',{
+        method:'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(newBooking)
+      })
+      .then(res=>res.json())
+      .then(data=>{console.log(data)})
   }
   return (
     <div style={{ textAlign: "center" }}>
