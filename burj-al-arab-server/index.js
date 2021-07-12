@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -17,10 +16,18 @@ client.connect(err => {
     const newBooking = req.body;
     bookings.insertOne(newBooking)
     .then(result=>{
-      res.send(result.insertedCount > 0);
+      res.send(result.insertedCount>0)
     })
     console.log(newBooking);
   })
+
+  app.get('/bookings',(req,res)=>{
+    bookings.find({email : req.query.email})
+    .toArray((err,document)=>{
+      res.send(document);
+    })
+  })
+  
 });
 
 app.get('/',(req,res)=>{
