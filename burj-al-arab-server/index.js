@@ -1,15 +1,26 @@
 const express = require('express');
-const app = express();
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
 const { MongoClient } = require('mongodb');
 const uri = "mongodb+srv://BurjAlArab:EQa8QXdsb8WVFNMq@cluster0.bm8mo.mongodb.net/BurjAlArabek?retryWrites=true&w=majority";
 console.log(uri);
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
-  const collection = client.db("BurjAlArabek").collection("bookings");
+  const bookings = client.db("BurjAlArabek").collection("bookings");
   console.log('connected');
   // perform actions on the collection object
-  client.close();
+  app.post('/addBooking',(req,res)=>{
+    const newBooking = req.body;
+    bookings.insertOne(newBooking)
+    .then(result=>{
+      res.send(result.insertedCount > 0);
+    })
+    console.log(newBooking);
+  })
 });
 
 app.get('/',(req,res)=>{
