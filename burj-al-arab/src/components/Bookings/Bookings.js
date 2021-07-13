@@ -22,7 +22,7 @@ const Bookings = () => {
         <div>
             <h1>Bookings: {bookings.length}</h1>
             {
-                bookings.map(books => <div>{books.name} from: {new Date(books.checkIn).toDateString('MM/DD/YYYY')}  to:  {new Date(books.checkOut).toDateString('MM/DD/YYYY')}</div>)
+                bookings.map(books => <div key={books._id}>{books.name} from: {new Date(books.checkIn).toDateString('MM/DD/YYYY')}  to:  {new Date(books.checkOut).toDateString('MM/DD/YYYY')}</div>)
             }
         </div>
     );
