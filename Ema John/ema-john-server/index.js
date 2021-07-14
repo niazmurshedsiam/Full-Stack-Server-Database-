@@ -21,6 +21,20 @@ client.connect(err => {
         res.send(result.insertedCount)
     })
 })
+
+app.get('/products',(req,res)=>{
+    productsCollection.find({}).limit(20)
+    .toArray((err,document)=>{
+        res.send(document);
+    })
+})
+
+app.get('/product/:key',(req,res)=>{
+    productsCollection.find({key: req.params.key}).limit(20)
+    .toArray((err,document)=>{
+        res.send(document[0]);
+    })
+})
   console.log('connected');
 //   client.close();
 });
