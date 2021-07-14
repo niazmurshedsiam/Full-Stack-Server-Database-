@@ -12,19 +12,20 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 console.log(uri);
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
-  const products = client.db("EmaJohnSimpleStore").collection("products");
+  const productsCollection = client.db("ema").collection("products");
   // perform actions on the collection object
-  console.log('connected');
-  client.close();
-});
-
-app.post('/addProduct',(req,res)=>{
-    const product = req.body;
-    products.insertOne(product)
+  app.post('/addProduct',(req,res)=>{
+    const products = req.body;
+    productsCollection.insertMany(products)
     .then(result=>{
-        console.log(result);
+        res.send(result.insertedCount)
     })
 })
+  console.log('connected');
+//   client.close();
+});
+
+
 app.get('/',(req,res)=>{
     res.send('Hello Ema John');
 })
