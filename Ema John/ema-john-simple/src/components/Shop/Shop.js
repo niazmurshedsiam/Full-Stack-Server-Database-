@@ -8,6 +8,7 @@ const Shop = () => {
   // const first10 = fakeData.slice(0, 10);
   const [products, setProducts] = useState([]);
   const [cart,setCart] = useState([]);
+
   useEffect(()=>{
     fetch('http://localhost:5000/products')
     .then(res=>res.json())

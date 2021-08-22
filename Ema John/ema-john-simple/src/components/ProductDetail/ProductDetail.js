@@ -1,8 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router';
 import Product from '../Product/Product';
-import { useEffect } from "react";
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 
 const ProductDetail = () => {
     const {productKey} = useParams();
@@ -10,7 +9,8 @@ const ProductDetail = () => {
     useEffect(()=>{
         fetch('http://localhost:5000/product/'+ productKey)
         .then(res=>res.json())
-        .then(data=>setProduct(data))
+        .then(data=> setProduct(data))
+        
     },[productKey])
     
     return (
