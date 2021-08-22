@@ -17,17 +17,16 @@ const Shop = () => {
   useEffect(()=>{
     const saveCart = getDatabaseCart();
     const productKeys = Object.keys(saveCart);
-    if(products.length > 0){
-      const previousCart = productKeys.map(existingKey =>{
-        const product = products.find(pd => pd.key === existingKey);
-        product.quantity = saveCart[existingKey];
-        return product;
-        // console.log(existingKey,saveCart[existingKey]);
-  
-      })
-      setCart(previousCart);
-    }
-  },[products])
+    fetch('http://localhost:5000/productsByKeys',{
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(productKeys)
+    })
+    .then(res=>res.json())
+    .then(data => setCart(data))
+  },[])
   const handleAddProduct = (product)=>{
       // console.log('cliked',product);
       const toBeAddedKey = product.key;
