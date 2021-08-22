@@ -16,7 +16,7 @@ client.connect(err => {
   // perform actions on the collection object
   app.post('/addProduct',(req,res)=>{
     const products = req.body;
-    productsCollection.insertMany(products)
+    productsCollection.insertOne(products)
     .then(result=>{
         res.send(result.insertedCount)
     })
@@ -37,15 +37,15 @@ app.get('/product/:key',(req,res)=>{
     })
 })
 
-app.post('/productsByKeys',(req,res)=>{
+app.post('/productsByKeys', (req, res) => {
     const productKeys = req.body;
-    productsCollection.find({key: { $in: productKeys}})
-    .toArray((err,document)=>{
-        res.send(document);
+    productsCollection.find({key: { $in: productKeys} })
+    .toArray( (err, documents) => {
+        res.send(documents);
     })
 })
   console.log('connected');
-//   client.close();
+
 });
 
 
