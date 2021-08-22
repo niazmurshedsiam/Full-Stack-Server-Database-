@@ -20,19 +20,28 @@ client.connect(err => {
     .then(result=>{
         res.send(result.insertedCount)
     })
+    console.log('connected');
 })
 
 app.get('/products',(req,res)=>{
-    productsCollection.find({}).limit(20)
-    .toArray((err,document)=>{
-        res.send(document);
+    productsCollection.find({})
+    .toArray((err,documents)=>{
+        res.send(documents);
     })
 })
 
 app.get('/product/:key',(req,res)=>{
     productsCollection.find({key: req.params.key}).limit(20)
+    .toArray((err,documents)=>{
+        res.send(documents[0]);
+    })
+})
+
+app.post('/productsByKeys',(req,res)=>{
+    const productKeys = req.body;
+    productsCollection.find({key: { $in: productKeys}})
     .toArray((err,document)=>{
-        res.send(document[0]);
+        res.send(document);
     })
 })
   console.log('connected');
