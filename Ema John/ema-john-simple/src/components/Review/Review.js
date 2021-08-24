@@ -11,50 +11,48 @@ import { useHistory } from "react-router-dom";
 const Review = () => {
   const [cart, setCart] = useState([]);
   const [orderPlaced, setOrderPlaced] = useState(false);
-  const history = useHistory()
-
-  const handleProceedCheckout = () => {
-      history.push('/shipment');
-  }
-
-  const removeProduct = (productKey) => {
-      const newCart = cart.filter(pd => pd.key !== productKey);
-      setCart(newCart);
-      removeFromDatabaseCart(productKey);
-  }
-
-  useEffect(()=>{
-      //cart
-      const savedCart = getDatabaseCart();
-      const productKeys = Object.keys(savedCart);
-
-      fetch('http://localhost:5000/productsByKeys', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(productKeys)
-      })
-      .then(res => res.json())
-      .then(data => setCart(data))
+  const history = useHistory();
+  useEffect(() => {
+    const saveCart = getDatabaseCart();
+    const productKeys = Object.keys(saveCart);
+    fetch('http://localhost:5000/productsByKeys',{
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(productKeys)
+    })
+    .then(res=>res.json())
+    .then(data => setCart(data))
+    
   }, []);
+  const handleProceedCheckout = ()=>{
+    history.push('/shipment');
 
+  }
+  const removeProduct = (productKey) => {
+    console.log("Remove Product", productKey);
+    const newCart = cart.filter((pd) => pd.key !== productKey);
+    setCart(newCart);
+    removeFromDatabaseCart(productKey);
+  };
   let thankyou;
-  if(orderPlaced){
-      thankyou = <img src={happyImage} alt=""/>
-  } 
+  if (orderPlaced){
+    thankyou = <img src={happyImage} alt="Image"/>
+  }
   
   return (
     <div className="twin-container">
       {/* <h1>This is Review {cart.length}</h1> */}
       <div className="product-container">
-        {
-          cart.map(pd => <ReviewItem 
-            key={pd.key}
-              removeProduct = {removeProduct}
-              product={pd}></ReviewItem>)
-        }
-        { thankyou }
+        {cart.map((product) => (
+          <ReviewItem
+            product={product}
+            removeProduct={removeProduct}
+            key={product.key}
+          ></ReviewItem>
+        ))}
+        {thankyou}
       </div>
       <div className="cart-container">
           <Cart cart={cart}>
