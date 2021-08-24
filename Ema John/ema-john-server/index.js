@@ -13,10 +13,13 @@ console.log(uri);
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
   const productsCollection = client.db("ema").collection("products");
+  const ordersCollection = client.db("ema").collection("products");
+  
   // perform actions on the collection object
   app.post('/addProduct',(req,res)=>{
     const products = req.body;
     productsCollection.insertOne(products)
+    
     .then(result=>{
         res.send(result.insertedCount)
     })
@@ -48,6 +51,15 @@ app.post('/productsByKeys', (req, res) => {
 
 });
 
+app.post('/addOrder',(req,res)=>{
+    const order = req.body;
+    ordersCollection.insertOne(order)
+    
+    .then(result=>{
+        res.send(result.insertedCount)
+    })
+    console.log('connected');
+})
 
 app.get('/',(req,res)=>{
     res.send('Hello Ema John');
