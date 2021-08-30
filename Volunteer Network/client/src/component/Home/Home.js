@@ -1,17 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Event from "./../Event/Event";
-const events = [
-    {
-        name: 'Child Support',
-        pic: 'childSupport.png'
-    },
-    {
-        name: 'Animal Shelter',
-        pic: 'animalShelter.png'
-    },
-];
-const Home = () => {
 
+const Home = () => {
+    const [events,setEvents] = useState([])
+    useEffect(()=>{
+        fetch('http://localhost:5000/events')
+        .then(res=>res.json())
+        .then(data=> setEvents(data))
+    },[])
     return (
         <div>
             <div>
