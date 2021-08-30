@@ -8,8 +8,8 @@ const events = [
     {
         name: 'Animal Shelter',
         pic: 'animalShelter.png'
-    }
-]
+    },
+];
 const Home = () => {
 
     return (
